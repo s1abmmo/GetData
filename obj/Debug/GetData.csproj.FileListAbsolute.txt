@@ -4,4 +4,3 @@ F:\Project\GetData\GetData\bin\Debug\GetData.pdb
 F:\Project\GetData\GetData\obj\Debug\GetData.csproj.CoreCompileInputs.cache
 F:\Project\GetData\GetData\obj\Debug\GetData.exe
 F:\Project\GetData\GetData\obj\Debug\GetData.pdb
-F:\Project\GetData\GetData\obj\Debug\GetData.csprojAssemblyReference.cache

@@ -21,6 +21,8 @@ namespace ScanData
             int Delay2 = Convert.ToInt32(Configs[1]);
             int Retry = Convert.ToInt32(Configs[2]);
 
+            int error = 0;
+
             for (int loop = 0; loop < ListInput.Length; loop++)
             {
                 string CustomerCode = ListInput[loop].Split('|')[0];
@@ -34,9 +36,9 @@ namespace ScanData
                 string Randoma = Randomtdea[0];
                 string result = sendRequest("https://mapi.vietjetair.com/apimobileweb/get-reservation.php", "ReservationNumber=" + CustomerCode + "&PaxFirstName=" + LastName2 + "&PaxLastName=" + FirstName + "&Itemnumber=18391422&Language=vi&step=flightstatus&_t=" + Randomt + "&_d=" + Randomd + "&_e=" + Randome + "&_a=" + Randoma);
                 //File.WriteAllText(Application.StartupPath + "//txt.txt", result);
-                int error = 0;
                 if (Regex.IsMatch(result, "\"OperationMessage\":\"OK\""))
                 {
+                    error = 0;
                     string Export = CustomerCode + "|" + FirstName + "|" + LastName + "|";
                     if (result.Split(new[] { "ArrivalLocal" }, StringSplitOptions.None).Length == 2)
                     {
@@ -102,7 +104,10 @@ namespace ScanData
                     }
                     Console.WriteLine(Export);
                     File.AppendAllText(Application.StartupPath + "//export.txt", Export + Environment.NewLine);
-                }else if (error<Retry) { error++;loop--; }
+                }else if (error<Retry) { error++;loop--; } else
+                {
+                    error = 0;
+                }
                 Thread.Sleep(new Random().Next(Delay1, Delay2));
             }
             Console.ReadKey();
