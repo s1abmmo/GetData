@@ -27,6 +27,7 @@ namespace ScanData
             {
                 string CustomerCode = ListInput[loop].Split('|')[0];
                 string FirstName = ListInput[loop].Split('|')[1];
+                string FirstName2 = FirstName.Replace(" ", "+");
                 string LastName = ListInput[loop].Split('|')[2];
                 string LastName2 = LastName.Replace(" ", "+");
                 string[] Randomtdea = Listtdea[new Random().Next(0, Listtdea.Length)].Split('|');
@@ -34,10 +35,12 @@ namespace ScanData
                 string Randomd = Randomtdea[0];
                 string Randome = Randomtdea[0];
                 string Randoma = Randomtdea[0];
-                string result = sendRequest("https://mapi.vietjetair.com/apimobileweb/get-reservation.php", "ReservationNumber=" + CustomerCode + "&PaxFirstName=" + LastName2 + "&PaxLastName=" + FirstName + "&Itemnumber=18391422&Language=vi&step=flightstatus&_t=" + Randomt + "&_d=" + Randomd + "&_e=" + Randome + "&_a=" + Randoma);
+                string result = sendRequest("https://mapi.vietjetair.com/apimobileweb/get-reservation.php", "ReservationNumber=" + CustomerCode + "&PaxFirstName=" + LastName2 + "&PaxLastName=" + FirstName2 + "&Itemnumber=18391422&Language=vi&step=flightstatus&_t=" + Randomt + "&_d=" + Randomd + "&_e=" + Randome + "&_a=" + Randoma);
                 //File.WriteAllText(Application.StartupPath + "//txt.txt", result);
+                string Export2 = loop.ToString() + "/" + ListInput.Length.ToString() + " ";
                 if (Regex.IsMatch(result, "\"OperationMessage\":\"OK\""))
                 {
+                    Export2 += "OK ";
                     error = 0;
                     string Export = CustomerCode + "|" + FirstName + "|" + LastName + "|";
                     if (result.Split(new[] { "ArrivalLocal" }, StringSplitOptions.None).Length == 2)
@@ -102,12 +105,14 @@ namespace ScanData
                     {
                         Export += "CTT|";
                     }
-                    Console.WriteLine(Export);
                     File.AppendAllText(Application.StartupPath + "//export.txt", Export + Environment.NewLine);
                 }else if (error<Retry) { error++;loop--; } else
                 {
+                    Export2 += "ERROR ";
                     error = 0;
                 }
+                Export2 += Export2;
+                Console.WriteLine(Export2);
                 Thread.Sleep(new Random().Next(Delay1, Delay2));
             }
             Console.ReadKey();
