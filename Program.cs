@@ -23,9 +23,9 @@ namespace ScanData
 
             for (int loop = 0; loop < ListInput.Length; loop++)
             {
-                string CustomerCode = ListInput[0].Split('|')[0];
-                string FirstName = ListInput[0].Split('|')[1];
-                string LastName = ListInput[0].Split('|')[2];
+                string CustomerCode = ListInput[loop].Split('|')[0];
+                string FirstName = ListInput[loop].Split('|')[1];
+                string LastName = ListInput[loop].Split('|')[2];
                 string LastName2 = LastName.Replace(" ", "+");
                 string[] Randomtdea = Listtdea[new Random().Next(0, Listtdea.Length)].Split('|');
                 string Randomt = Randomtdea[0];
@@ -102,8 +102,8 @@ namespace ScanData
                     }
                     Console.WriteLine(Export);
                     File.AppendAllText(Application.StartupPath + "//export.txt", Export + Environment.NewLine);
-                    Thread.Sleep(new Random().Next(Delay1,Delay2)); ;
                 }else if (error<Retry) { error++;loop--; }
+                Thread.Sleep(new Random().Next(Delay1, Delay2));
             }
             Console.ReadKey();
         }
